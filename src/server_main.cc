@@ -56,7 +56,6 @@ string processBuffer(char *req_buff) {
 				strResponse = "book_now|Booking Request Failed. Available Seats " + toString(iHowManyAvl) + " Only"; 
 			}
 			else {
-				//cout<<"[DEBUG] iHowManyAvl<iHowManyReq"<<endl;
 				if(iHowManyReq!=0){
 					string book_seats = makeBooking(booking_name, iHowManyReq);
 					int icount = count(book_seats.begin(), book_seats.end(), ',');	
