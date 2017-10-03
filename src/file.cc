@@ -118,17 +118,13 @@ int getAvailability() {
 }
 
 string makeBooking(string booking_name, int iHowManyReq) {
-	//cout<<"[DEBUG] inside makeBooking"<<endl;
 	string str_seat_list="Booking Server Is Busy...";
-	//if(getAvailability()<iHowManyReq) return "Booking Request Is More Than Availability";
 	while(!iBookingControlFlag) {
-		//cout<<"[DEBUG] inside makeBooking while"<<endl;
 		str_seat_list="";
 		iBookingControlFlag = 1;
         	int iSeatCount=0;
         	map<string, Booking*>::iterator itmapBooking = mapBooking.begin();
         	while(itmapBooking!=mapBooking.end()) {
-			//cout<<"[DEBUG] booking"<<itmapBooking->second->getBooking()<<endl;
                 	if(itmapBooking->second->getBooking()=="") {
 				itmapBooking->second->setBooking(booking_name);
 				if(str_seat_list!="") { 
@@ -136,7 +132,6 @@ string makeBooking(string booking_name, int iHowManyReq) {
 				}
 				str_seat_list += itmapBooking->second->getSeat();
                         	iSeatCount++;
-				//cout<<"[DEBUG] seats : "<<str_seat_list<<endl;
 				if(iSeatCount==iHowManyReq) {
 					break;
 				}
@@ -149,19 +144,16 @@ string makeBooking(string booking_name, int iHowManyReq) {
 }
 
 string alterBookings(string strUsername,int iCancelSeats=0) {
-	//cout<<"[DEBUG] inside alterBookings"<<endl;
 	string strAlterResponse = "Searver Is Busy, We can not alter your Bookings";
 	int iFlagIsAll = iCancelSeats==0?1:0;
 	if(iCancelSeats==0) {
 		iCancelSeats = getUserBookingCount(strUsername);
 	}
         while(!iBookingControlFlag) {
-                //cout<<"[DEBUG] inside makeBooking while"<<endl;
                 iBookingControlFlag = 1;
                 int iSeatCount=0;
                 map<string, Booking*>::iterator itmapBooking = mapBooking.begin();
                 while(itmapBooking!=mapBooking.end()) {
-                        //cout<<"[DEBUG] booking"<<itmapBooking->second->getBooking()<<endl;
                         if(itmapBooking->second->getBooking()==strUsername) {
                                 itmapBooking->second->setBooking("");
                                 iSeatCount++;
@@ -190,21 +182,17 @@ string alterBookings(string strUsername,int iCancelSeats=0) {
 }
 
 void getAllBookings() {
-      	//cout<<"[DEBUG] Inside getAllBookings"<<endl; 
 	ifstream infile;
         string strLine;
         infile.open(BOOKING_FILE);
         if(infile.is_open()) {
-		//cout<<"[DEBUG] File Opened Successfully :"<<BOOKING_FILE<<endl;
                 while (getline(infile,strLine)) {
-			//cout<<"[DEBUG] "<<strLine<<endl;
 			string::size_type pos = strLine.find('|');
 			if(strLine.npos != pos) {
         			string name = strLine.substr(pos + 1);
         			string seat = strLine.substr(0, pos);
 				Booking *bk = new Booking(seat, name);
 				mapBooking.insert(std::pair<string, Booking*>(seat, bk));
-				//cout<<"[DEBUG] Booking "<<mapBooking[seat]->getSeat()<<" | "<<mapBooking[seat]->getBooking()<<" Added Into mapUsers"<<endl;
 			}	
                 }
 		cout<<"Done";
@@ -212,7 +200,6 @@ void getAllBookings() {
 	else {
 		cout<<"Failed";		
 	}
-	//cout<<"[DEBUG] Booking Seat "<<mapBooking.size()<<" Available"<<endl;
         infile.close();
 }
 
@@ -225,24 +212,19 @@ int getTotalSeats() {
 }
 
 void getAllUsers() {
-	//cout<<"[DEBUG] Inside getAllUsers"<<endl;
 	ifstream infile;
 	string strLine;
         infile.open(USER_FILE);
 	if(infile.is_open()) {
-		//cout<<"[DEBUG] File Opened Successfully : "<<USER_FILE<<endl;
 		while ( getline(infile,strLine)) {
-			//cout<<"[DEBUG] "<<strLine<<endl;
 			string::size_type pos = strLine.find('|');
 			if(strLine.npos != pos) {
 				string strPassword = strLine.substr(pos + 1);
 				string strUsername = strLine.substr(0, pos);
 				User *usr = new User(strUsername, strPassword);
 				mapUsers.insert(std::pair<string, User*>(strUsername,usr));
-				//cout<<"[DEBUG] User "<<mapUsers[strUsername]->getUserName()<<" Added Into mapUsers"<<endl;
     			}
 		}
-		//cout<<"[DEBUG] Total Users "<<mapUsers.size()<<endl;
 		cout<<"Done";
 	}
 	else {
